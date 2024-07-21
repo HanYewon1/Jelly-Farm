@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class JellyController : MonoBehaviour
 {
     public float speed = 5f;
     public float minX, maxX, minY, maxY;
+    bool clickPause;
     private Vector2 JellyPosition;
     private Vector2 nextPosition;
     private Animator _animator;
@@ -16,12 +18,16 @@ public class JellyController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         StartCoroutine(MovePause());
+        clickPause = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        rb.velocity = nextPosition * speed * Time.deltaTime;
+        if (!clickPause)
+            rb.velocity = nextPosition * speed * Time.deltaTime;
+        else rb.velocity = Vector2.zero;
+        
     }
 
     IEnumerator MovePause()
@@ -57,6 +63,21 @@ public class JellyController : MonoBehaviour
         }
     }
 
+    void OnMouseDown() //마우스 클릭 시
+    {
+        Debug.Log("Click");
+        StartCoroutine(Pause());
+            
+    }
+
+    IEnumerator Pause() //즉시 이동 멈추고 Touch 애니메이션
+    {
+        clickPause = true;
+        _animator.SetBool("isMove", false);
+        _animator.SetTrigger("isTouch");
+        yield return new WaitForSeconds(1);
+        clickPause = false;
+    }
   
     
         
