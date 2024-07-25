@@ -13,8 +13,9 @@ public class JellyController : MonoBehaviour
     private Animator _animator;
     Rigidbody2D rb;
     // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
+       
         rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
 
@@ -22,6 +23,10 @@ public class JellyController : MonoBehaviour
         clickPause = false;
     }
 
+    private void Update()
+    {
+        Click();
+    }
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -64,11 +69,15 @@ public class JellyController : MonoBehaviour
         }
     }
 
-    void OnMouseDown() //마우스 클릭 시
+    void Click() //마우스 클릭 시
     {
-        Debug.Log("Click");
-        StartCoroutine(Pause());
-            
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D rayhit = Physics2D.Raycast(mousePos, Vector2.zero);
+        if (rayhit.collider != null) //ray가 콜라이더와 충돌 시
+        {
+            if (Input.GetMouseButtonDown(0)) //마우스 클릭 시
+                StartCoroutine(Pause());
+        } 
     }
 
     IEnumerator Pause() //즉시 이동 멈추고 Touch 애니메이션
@@ -79,8 +88,4 @@ public class JellyController : MonoBehaviour
         yield return new WaitForSeconds(1);
         clickPause = false;
     }
-  
-    
-        
-    
 }
