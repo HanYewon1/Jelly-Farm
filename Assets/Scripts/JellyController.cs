@@ -7,7 +7,7 @@ public class JellyController : MonoBehaviour
 {
     public float speed = 5f;
     public float minX, maxX, minY, maxY;
-    bool clickPause;
+    public bool clickPause;
     private Vector2 JellyPosition;
     private Vector2 nextPosition;
     private Animator _animator;
@@ -17,6 +17,7 @@ public class JellyController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+
         StartCoroutine(MovePause());
         clickPause = false;
     }
