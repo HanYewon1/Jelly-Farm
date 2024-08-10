@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GoldJelatin : MonoBehaviour
 {
@@ -14,7 +15,6 @@ public class GoldJelatin : MonoBehaviour
     static float ExpInt = 0f;
     public int level = 1;
     static int levelExp = 30; //레벨업에 필요한 경험치
-    // Start is called before the first frame update
     void Start()
     {
         UpdateUI();
@@ -52,7 +52,7 @@ public class GoldJelatin : MonoBehaviour
         }
         
     }
-    
+
 
     private void UpdateUI()
     {

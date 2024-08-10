@@ -1,17 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DragController : MonoBehaviour
 {
     private static DragController _instance;
-    private bool _dragActive = false;
+    public bool _dragActive = false;
     private Vector2 _screenposition;
     private Vector3 _worldPosition;
     private Vector3 _offset;
+    GoldJelatin goldJelatin;
 
-
+    private void Start()
+    {
+        goldJelatin= GetComponent<GoldJelatin>();
+    }
     void Update()
+    {
+        DragControll();
+    }
+    void DragControll()
     {
         if (_dragActive && Input.GetMouseButtonDown(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended))
         {
@@ -58,12 +67,21 @@ public class DragController : MonoBehaviour
 
         void Drag()
         {
-            transform.position = new Vector2(_worldPosition.x, _worldPosition.y);
+        transform.position = new Vector2(_worldPosition.x, _worldPosition.y);
         }
 
         void Drop()
         {
-            _dragActive = false;
+           
+        if (EventSystem.current.IsPointerOverGameObject()==true)
+        {
+                goldJelatin.GoldInt += 200;
+                Debug.Log("Sell");
+            
+            
+            Destroy(gameObject);
         }
+        _dragActive = false;
+    }
     }
 
