@@ -12,6 +12,7 @@ public class JellyController : MonoBehaviour
     private Vector2 nextPosition;
     private Animator _animator;
     Rigidbody2D rb;
+    public Vector3[] PointList;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -23,13 +24,16 @@ public class JellyController : MonoBehaviour
         clickPause = false;
     }
 
+
     private void Update()
     {
         Click();
+
     }
     // Update is called once per frame
     void FixedUpdate()
     {
+        
         if (!clickPause)
             rb.velocity = nextPosition * speed * Time.deltaTime;
         else rb.velocity = Vector2.zero;
@@ -88,4 +92,7 @@ public class JellyController : MonoBehaviour
         yield return new WaitForSeconds(1);
         clickPause = false;
     }
+   
+
+
 }
