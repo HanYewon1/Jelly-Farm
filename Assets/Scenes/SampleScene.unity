@@ -1106,6 +1106,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423109925}
   m_CullTransparentMesh: 1
+--- !u!1 &486989952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 486989953}
+  m_Layer: 0
+  m_Name: agandDropCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &486989953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486989952}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.305, y: 0.3043689, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1283,14 +1314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8a98ca1c1def44b90bd2f518a1fd1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PointList:
-  - {x: -3, y: -1, z: -1}
-  - {x: 0, y: 0, z: 0}
-  - {x: 3, y: 1, z: 1}
-  LevelAc:
-  - {fileID: 9100000, guid: 8c7845f2d3a629943afc1519da279300, type: 2}
-  - {fileID: 9100000, guid: cf4db5108a8b1874692fcde7c19517c8, type: 2}
-  - {fileID: 9100000, guid: 0d3842a994495234589cb6d54c1215e2, type: 2}
 --- !u!4 &620397619
 Transform:
   m_ObjectHideFlags: 0
@@ -1651,6 +1674,7 @@ GameObject:
   - component: {fileID: 1085996152}
   - component: {fileID: 1085996153}
   - component: {fileID: 1085996154}
+  - component: {fileID: 1085996155}
   m_Layer: 0
   m_Name: Jelly
   m_TagString: Jelly
@@ -1769,10 +1793,6 @@ MonoBehaviour:
   - {x: -3, y: -1, z: -1}
   - {x: 0, y: 0, z: 0}
   - {x: 3, y: 1, z: 1}
-  LevelAc:
-  - {fileID: 9100000, guid: 8c7845f2d3a629943afc1519da279300, type: 2}
-  - {fileID: 9100000, guid: cf4db5108a8b1874692fcde7c19517c8, type: 2}
-  - {fileID: 9100000, guid: 0d3842a994495234589cb6d54c1215e2, type: 2}
 --- !u!50 &1085996153
 Rigidbody2D:
   serializedVersion: 4
@@ -1835,6 +1855,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.4}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &1085996155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085996147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd085feb151f4ad48b9d8b1634721104, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1133383938
 GameObject:
   m_ObjectHideFlags: 0
@@ -2682,6 +2714,7 @@ MonoBehaviour:
   GoldText: {fileID: 339158456}
   JelatinInt: 0
   GoldInt: 0
+  level: 1
 --- !u!1 &1833527271
 GameObject:
   m_ObjectHideFlags: 0
@@ -2816,6 +2849,7 @@ GameObject:
   - component: {fileID: 1843420490}
   - component: {fileID: 1843420489}
   - component: {fileID: 1843420488}
+  - component: {fileID: 1843420494}
   m_Layer: 0
   m_Name: Jelly (1)
   m_TagString: Jelly
@@ -2904,7 +2938,6 @@ MonoBehaviour:
   maxY: 1.2
   clickPause: 0
   PointList: []
-  LevelAc: []
 --- !u!95 &1843420491
 Animator:
   serializedVersion: 5
@@ -2994,6 +3027,18 @@ Transform:
   - {fileID: 313442263}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1843420494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843420487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd085feb151f4ad48b9d8b1634721104, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1963457997
 GameObject:
   m_ObjectHideFlags: 0
@@ -3215,3 +3260,4 @@ SceneRoots:
   - {fileID: 1753533064}
   - {fileID: 1435831927}
   - {fileID: 620397619}
+  - {fileID: 486989953}

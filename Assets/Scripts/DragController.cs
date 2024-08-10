@@ -4,54 +4,66 @@ using UnityEngine;
 
 public class DragController : MonoBehaviour
 {
-    private bool _DragActive = false;
+    private static DragController _instance;
+    private bool _dragActive = false;
     private Vector2 _screenposition;
     private Vector3 _worldPosition;
+    private Vector3 _offset;
 
-    private void Awake()
-    {
-        DragController[] controllers = FindObjectsOfType<DragController>();
-        if (controllers.Length > 1) Destroy(gameObject);
-    }
+
     void Update()
     {
-        if (_DragActive && Input.GetMouseButtonDown(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended))
+        if (_dragActive && Input.GetMouseButtonDown(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended))
         {
             Drop();
             return;
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) || Input.touchCount > 0)
         {
-            Vector3 mousePos = Input.mousePosition;
-            _screenposition = new Vector2(mousePos.x, mousePos.y);
+            GetInputPosition();
+            _worldPosition = Camera.main.ScreenToWorldPoint(_screenposition);
+            if (_dragActive) Drag();
+            else TryInitDrag();
         }
-        else if (Input.touchCount > 0)
-        {
-            _screenposition = Input.GetTouch(0).position;
-        }
-        else return;
+    }
 
-        _worldPosition = Camera.main.ScreenToWorldPoint(_screenposition);
-        if (_DragActive) Drag();
-        else
+        void GetInputPosition()
         {
-            RaycastHit2D hit = Physics2D.Raycast(_worldPosition, Vector2.zero);
-            if (hit.collider != null) InitDrag();
+            if(Input.GetMouseButton(0))
+            {
+                Vector3 mousePos = Input.mousePosition;
+                _screenposition = new Vector2(mousePos.x, mousePos.y);
+            }
+            else if(Input.touchCount > 0)
+            {
+                _screenposition=Input.GetTouch(0).position;
+            }
+        }
+        void TryInitDrag()
+        {
+        RaycastHit2D hit = Physics2D.Raycast(_worldPosition, Vector2.zero);
+        if(hit.collider!=null&&hit.collider.gameObject==gameObject)
+        {
+            InitDrag();
+        }
+           
         }
 
         void InitDrag()
         {
-            _DragActive = true;
+            _dragActive = true;
+            _offset = transform.position - Camera.main.ScreenToWorldPoint(_screenposition);
+        
         }
 
         void Drag()
         {
-            gameObject.transform.position = new Vector2(_worldPosition.x, _worldPosition.y);
+            transform.position = new Vector2(_worldPosition.x, _worldPosition.y);
         }
 
         void Drop()
         {
-            _DragActive = false;
+            _dragActive = false;
         }
     }
-}
+
