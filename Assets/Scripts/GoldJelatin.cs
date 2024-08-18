@@ -6,8 +6,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+
 public class GoldJelatin : MonoBehaviour
 {
+    
     public TextMeshProUGUI JelatinText;
     public TextMeshProUGUI GoldText;
     public int JelatinInt = 0;
@@ -24,8 +26,8 @@ public class GoldJelatin : MonoBehaviour
     void Update()
     {
        
-        ClickJG();
-        Exp();
+        //ClickJG();
+       // Exp();
     }
 
     void ClickJG() //젤리 클릭 시 젤라틴, 경험치 증가
@@ -38,7 +40,7 @@ public class GoldJelatin : MonoBehaviour
                 JelatinInt++; //젤라틴 증가
                 ExpInt++; //경험치 증가
                 UpdateUI();
-                Debug.Log(JelatinInt);
+                //Debug.Log(JelatinInt);
             }
         }
     }
