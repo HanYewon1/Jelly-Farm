@@ -20,7 +20,30 @@ public class GameManager : MonoBehaviour
     public TMP_Text Jelly_Name_List;
     public TMP_Text PageNumber;
 
+    public int _jelatin;
+    public TMP_Text Jelatin_Text;
+
+    public int _gold;
+    public TMP_Text Gold_Text;
+    public bool isSell;
+    public int maxGold;
+
     private static int _page = 0; // UI 페이지
+
+    JellyController jellyController;
+
+    private void Start()
+    {
+        jellyController = GetComponent<JellyController>();
+    }
+    void Awake()
+    {
+        isSell = false;
+    }
+    public void CheckSell()
+    {
+        isSell = (isSell == false);
+    }
 
     public void OnRightButtonClick()
     {
@@ -48,5 +71,18 @@ public class GameManager : MonoBehaviour
         Jelly_Name_List.text = jellyNameList[_page];
         PageNumber.text = string.Format("#{0:00}", (_page + 1));
     }
+
+    public void JelatinChange() //젤라틴 값 변화
+    {
+        Jelatin_Text.text = _jelatin.ToString();
+    }
+    public void GoldChange(int id, int level)
+    {
+        _gold += jellyGoldList[id] * level;
+        if (_gold > maxGold) _gold = maxGold;
+        Gold_Text.text = _gold.ToString();
+    }
+
+
 
 }

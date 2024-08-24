@@ -5,13 +5,11 @@ using UnityEngine.EventSystems;
 
 public class SellJelly : MonoBehaviour
 {
-    GoldJelatin goldJelatin;
     DragController dragController;
 
 
     private void Start()
     {
-        goldJelatin = GetComponent<GoldJelatin>();
         dragController = GetComponent<DragController>();
     }
     void Update()
@@ -24,7 +22,6 @@ public class SellJelly : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject() && dragController != null)
         {
             Destroy(this.gameObject);
-            goldJelatin.GoldInt += 200;
             Debug.Log("Sell");
         }
         {
