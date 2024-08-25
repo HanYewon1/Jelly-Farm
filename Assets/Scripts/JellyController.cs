@@ -17,6 +17,7 @@ public class JellyController : MonoBehaviour
     public GameManager gameManager;
     public int _id;
     public int _level;
+    public float _exp;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -31,7 +32,7 @@ public class JellyController : MonoBehaviour
 
     private void Update()
     {
-        Click();
+        Exp();
 
     }
     // Update is called once per frame
@@ -51,7 +52,7 @@ public class JellyController : MonoBehaviour
             RandomMove();
             yield return new WaitForSeconds(3);
             nextPosition = Vector2.zero;
-            _animator.SetBool("isMove", false);
+            _animator.SetBool("isWalk", false);
             yield return new WaitForSeconds(2);
         }
     }
@@ -80,44 +81,50 @@ public class JellyController : MonoBehaviour
         if (nextPosition.x < 0) //왼쪽
         {
             GetComponent<SpriteRenderer>().flipX = true;
-            _animator.SetBool("isMove", true);
+            _animator.SetBool("isWalk", true);
         }
         else if(nextPosition.x > 0) //오른쪽
         {
             GetComponent<SpriteRenderer>().flipX = false;
-            _animator.SetBool("isMove", true);
+            _animator.SetBool("isWalk", true);
         }
         else //움직이지 않을 경우
         {
-            _animator.SetBool("isMove", false);
+            _animator.SetBool("isWalk", false);
         }
         
     }
 
-    void Click() //마우스 클릭 시
+    void OnMouseDown()//마우스 클릭 시
     {
-        if (Input.GetMouseButtonDown(0))
-        {//마우스 클릭 시
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D rayhit = Physics2D.Raycast(mousePos, Vector2.zero);
             if (rayhit.collider != null) //ray가 콜라이더와 충돌 시
             {
-                StartCoroutine(Pause());
+                if (_exp < gameManager.maxExp) ++_exp; //클릭하면 경험치 1씩 증가
+                gameManager.JelatinChange(_id, _level); //젤라틴 값 증가
+                StartCoroutine(Pause()); //젤리 이동 멈춤
                 
             }
-
-            } 
+            
     }
 
     IEnumerator Pause() //즉시 이동 멈추고 Touch 애니메이션
     {
         clickPause = true;
-        _animator.SetBool("isMove", false);
-        _animator.SetTrigger("isTouch");
+        _animator.SetBool("isWalk", false);
+        _animator.SetTrigger("doTouch");
         yield return new WaitForSeconds(1);
         clickPause = false;
     }
-   
 
+    void Exp() //시간이 지나면 자동으로 쌓이는 경험치
+    {
+        if (_exp < gameManager.maxExp) _exp += Time.deltaTime;
+        if (_exp > (50 * _level) && _level < 3) //레벨 바뀔 때마다 애니메이터 바뀜
+        {
+            gameManager.ChangeAc(_animator, ++_level);
+        }
+    }
 
 }

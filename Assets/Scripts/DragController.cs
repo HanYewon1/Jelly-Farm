@@ -17,7 +17,7 @@ public class DragController : MonoBehaviour
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        jellyController = GetComponent<JellyController>(); 
+        jellyController = GetComponent<JellyController>();
     }
     void Update()
     {
@@ -25,7 +25,7 @@ public class DragController : MonoBehaviour
     }
     void DragControll()
     {
-        if(Input.GetMouseButtonDown(0)||Input.touchCount==1&&Input.GetTouch(0).phase == TouchPhase.Began)
+        if (Input.GetMouseButtonDown(0) || Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             _clickTime = Time.time; //마우스 눌린 이후 시간
         }
@@ -34,7 +34,7 @@ public class DragController : MonoBehaviour
             Drop();
             return;
         }
-        if ((Input.GetMouseButton(0) || Input.touchCount > 0)&&(Time.time - _clickTime >=0.2))
+        if ((Input.GetMouseButton(0) || Input.touchCount > 0) && (Time.time - _clickTime >= 0.2))
         { //0.2초 이상 클릭하고 있을 경우
             GetInputPosition();
             _worldPosition = Camera.main.ScreenToWorldPoint(_screenposition);
@@ -43,52 +43,52 @@ public class DragController : MonoBehaviour
         }
     }
 
-        void GetInputPosition()
+    void GetInputPosition()
+    {
+        if (Input.GetMouseButton(0))
         {
-            if(Input.GetMouseButton(0))
-            {
-                Vector3 mousePos = Input.mousePosition;
-                _screenposition = new Vector2(mousePos.x, mousePos.y);
-                _worldPosition = Camera.main.ScreenToWorldPoint(_screenposition);
+            Vector3 mousePos = Input.mousePosition;
+            _screenposition = new Vector2(mousePos.x, mousePos.y);
+            _worldPosition = Camera.main.ScreenToWorldPoint(_screenposition);
 
         }
-            else if(Input.touchCount > 0)
-            {
-                _screenposition=Input.GetTouch(0).position;
-                _worldPosition = Camera.main.ScreenToWorldPoint(_screenposition);
-
-        }
-        }
-        void TryInitDrag()
+        else if (Input.touchCount > 0)
         {
-            RaycastHit2D hit = Physics2D.Raycast(_worldPosition, Vector2.zero);
-            if(hit.collider!=null&&hit.collider.gameObject==gameObject)
-            {
-                InitDrag();
-            }
-           
-        }
+            _screenposition = Input.GetTouch(0).position;
+            _worldPosition = Camera.main.ScreenToWorldPoint(_screenposition);
 
-        void InitDrag()
+        }
+    }
+
+    void TryInitDrag()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(_worldPosition, Vector2.zero);
+        if (hit.collider != null && hit.collider.gameObject == gameObject)
         {
-            _dragActive = true;
-            _offset = transform.position - _worldPosition; //드래그 시 객체가 터치 위치에 맞춰짐
-        
+            InitDrag();
         }
 
-        void Drag()
-        {//드래그 도중 객체 위치 설정
-            transform.position = _worldPosition + _offset;
-        }
+    }
 
-        void Drop()
-        {
+    void InitDrag()
+    {
+        _dragActive = true;
+        _offset = transform.position - _worldPosition; //드래그 시 객체가 터치 위치에 맞춰짐
+
+    }
+
+    void Drag()
+    {//드래그 도중 객체 위치 설정
+        transform.position = _worldPosition + _offset;
+    }
+
+    void Drop()
+    {
         if (gameManager.isSell)
         {
             gameManager.GoldChange(jellyController._id, jellyController._level);
             Destroy(gameObject);
         }
-            _dragActive = false;
-        }
+        _dragActive = false;
     }
-
+}

@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6021696
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1675,6 +1675,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d46fde40b46f5489b04c3361c3c58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level_ac:
+  - {fileID: 9100000, guid: 8c7845f2d3a629943afc1519da279300, type: 2}
+  - {fileID: 9100000, guid: cf4db5108a8b1874692fcde7c19517c8, type: 2}
+  - {fileID: 9100000, guid: 0d3842a994495234589cb6d54c1215e2, type: 2}
   jellyGoldList: 64000000c8000000f4010000e8030000dc050000d0070000b80b0000881300004c1d000010270000a861000050c30000
   jellySpriteList:
   - {fileID: 21300000, guid: f4ba7a5e8b25ae241a6c94d4d6df858d, type: 3}
@@ -1705,15 +1709,20 @@ MonoBehaviour:
   - "\uC9C0\uAD6C"
   Jelly_Gold_List: {fileID: 0}
   Jelly_Sprite_List: {fileID: 0}
-  Jelly_Jelatin_List: {fileID: 0}
+  Jelly_Jelatin_List: {fileID: 811430944}
   Jelly_Name_List: {fileID: 0}
   PageNumber: {fileID: 0}
+  LockGroup: {fileID: 1995993983}
+  lockedJelly: {fileID: 1534955724}
+  lockedimage: {fileID: 200183240}
   _jelatin: 0
   Jelatin_Text: {fileID: 1963457999}
   _gold: 0
   Gold_Text: {fileID: 339158456}
   isSell: 0
-  maxGold: 999999999
+  maxGold: 99999999
+  maxJelatin: 99999999
+  maxExp: 99999999
 --- !u!1001 &621555183
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2078,6 +2087,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d46fde40b46f5489b04c3361c3c58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level_ac: []
   jellyGoldList: 64000000c8000000f4010000e8030000dc050000d0070000b80b0000881300004c1d000010270000a861000050c30000
   jellySpriteList:
   - {fileID: 21300000, guid: f4ba7a5e8b25ae241a6c94d4d6df858d, type: 3}
@@ -2108,15 +2118,20 @@ MonoBehaviour:
   - "\uC9C0\uAD6C"
   Jelly_Gold_List: {fileID: 1045134067}
   Jelly_Sprite_List: {fileID: 542240435}
-  Jelly_Jelatin_List: {fileID: 1963457999}
+  Jelly_Jelatin_List: {fileID: 811430944}
   Jelly_Name_List: {fileID: 847648540}
   PageNumber: {fileID: 1107744188}
+  LockGroup: {fileID: 1995993983}
+  lockedJelly: {fileID: 1534955724}
+  lockedimage: {fileID: 200183240}
   _jelatin: 0
   Jelatin_Text: {fileID: 0}
   _gold: 0
   Gold_Text: {fileID: 0}
   isSell: 0
   maxGold: 0
+  maxJelatin: 0
+  maxExp: 0
 --- !u!1 &744612007
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,7 +2266,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 999.999
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b8facf28250466d4e8775d5b61c5104a, type: 2}
   m_sharedMaterial: {fileID: 2381334616010197306, guid: b8facf28250466d4e8775d5b61c5104a, type: 2}
@@ -2954,7 +2969,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 999.999
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b8facf28250466d4e8775d5b61c5104a, type: 2}
   m_sharedMaterial: {fileID: 2381334616010197306, guid: b8facf28250466d4e8775d5b61c5104a, type: 2}
@@ -3131,7 +3146,7 @@ Animator:
   m_GameObject: {fileID: 1085996147}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8620ba2070c83bc4ea6f27855818194b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8c7845f2d3a629943afc1519da279300, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3168,7 +3183,8 @@ MonoBehaviour:
   - {x: 3, y: 1, z: 1}
   gameManager: {fileID: 620397620}
   _id: 1
-  _level: 2
+  _level: 0
+  _exp: 0
 --- !u!50 &1085996153
 Rigidbody2D:
   serializedVersion: 4
@@ -4292,6 +4308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d46fde40b46f5489b04c3361c3c58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level_ac: []
   jellyGoldList: 64000000c8000000f4010000e8030000dc050000d0070000b80b0000881300004c1d000010270000a861000050c30000
   jellySpriteList:
   - {fileID: 21300000, guid: f4ba7a5e8b25ae241a6c94d4d6df858d, type: 3}
@@ -4322,15 +4339,20 @@ MonoBehaviour:
   - "\uC9C0\uAD6C"
   Jelly_Gold_List: {fileID: 1045134067}
   Jelly_Sprite_List: {fileID: 542240435}
-  Jelly_Jelatin_List: {fileID: 1963457999}
+  Jelly_Jelatin_List: {fileID: 811430944}
   Jelly_Name_List: {fileID: 847648540}
   PageNumber: {fileID: 1107744188}
+  LockGroup: {fileID: 1995993983}
+  lockedJelly: {fileID: 1534955724}
+  lockedimage: {fileID: 200183240}
   _jelatin: 0
   Jelatin_Text: {fileID: 0}
   _gold: 0
   Gold_Text: {fileID: 0}
   isSell: 0
   maxGold: 0
+  maxJelatin: 0
+  maxExp: 0
 --- !u!4 &1629777097 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8171373853705526922, guid: 31c8c27dfb42da54e9548d06b9d705f3, type: 3}
@@ -4545,7 +4567,6 @@ GameObject:
   - component: {fileID: 1753533063}
   - component: {fileID: 1753533062}
   - component: {fileID: 1753533061}
-  - component: {fileID: 1753533065}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4642,18 +4663,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1753533065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753533060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74dda17bdbffbc34f9232f6a434fd688, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1833527271
 GameObject:
   m_ObjectHideFlags: 0
@@ -4927,7 +4936,8 @@ MonoBehaviour:
   PointList: []
   gameManager: {fileID: 620397620}
   _id: 1
-  _level: 1
+  _level: 0
+  _exp: 0
 --- !u!95 &1843420491
 Animator:
   serializedVersion: 5
@@ -4938,7 +4948,7 @@ Animator:
   m_GameObject: {fileID: 1843420487}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8620ba2070c83bc4ea6f27855818194b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8c7845f2d3a629943afc1519da279300, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5179,7 +5189,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1995993984
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5358,7 +5368,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2133929122}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 620397620}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: LockList
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2133929122
 MonoBehaviour:
   m_ObjectHideFlags: 0
