@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class JellyController : MonoBehaviour
 {
     public GameObject leftTop;
     public GameObject rightBottom;
+    public GameObject shadow;
+    public float shadow_pos_y;
     public float speed = 5f;
     public float minX, maxX, minY, maxY;
     public bool clickPause;
@@ -27,6 +30,8 @@ public class JellyController : MonoBehaviour
 
         StartCoroutine(MovePause());
         clickPause = false;
+
+        Shadow();
     }
 
 
@@ -125,6 +130,21 @@ public class JellyController : MonoBehaviour
         {
             gameManager.ChangeAc(_animator, ++_level);
         }
+    }
+
+    void Shadow() //jelly prefab에 맞춰 그림자 위치 조종
+    {
+        shadow = transform.Find("Shadow").gameObject;
+        switch (_id)
+        {
+            case 0: shadow_pos_y = -0.05f; break;
+            case 3: shadow_pos_y = -0.14f; break;
+            case 6: shadow_pos_y = -0.12f; break;
+            case 10: shadow_pos_y = -0.16f; break;
+            case 11: shadow_pos_y = -0.16f; break;
+            default: shadow_pos_y = -0.05f; break;
+        }
+        shadow.transform.localPosition = new Vector3(0, shadow_pos_y, 0);
     }
 
 }

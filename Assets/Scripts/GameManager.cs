@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
     public int maxExp;
     bool[] unlockList;
 
+    public GameObject jellyPrefab;
+
     private static int _page = 0; // UI 페이지
 
     JellyController jellyController;
@@ -86,7 +88,6 @@ public class GameManager : MonoBehaviour
 
     void PanelChange()
     {
-        //0, 1, 2 페이지는 항상 해금
         LockGroup.gameObject.SetActive(!unlockList[_page]);
         PageNumber.text = string.Format("#{0:00}", (_page + 1));
 
@@ -125,6 +126,13 @@ public class GameManager : MonoBehaviour
         PanelChange();
         _jelatin -= jellyJelatinList[_page]; //보유 젤라틴 - 필요한 젤라틴
         
+    }
+
+    public void Buy()//골드로 젤리 구매
+    {
+        if (_gold < jellyGoldList[_page]) return;
+        Instantiate(jellyPrefab, new Vector3(0, 0, 0), Quaternion.identity); //젤리 생성
+        _gold -= jellyGoldList[_page]; //보유 골드 - 필요한 골드
     }
 
 
