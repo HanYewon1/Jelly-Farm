@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
 
     public void JelatinChange(int id, int level) //Á©¶óÆ¾ °ª º¯È­
     {
-        _jelatin += (id + 1) * level;
+        _jelatin += (id + 1) * level * clickPage;
         if (_jelatin > maxJelatin) _jelatin = maxJelatin;
         Jelatin_Text.text = _jelatin.ToString();
     }
@@ -141,25 +141,29 @@ public class GameManager : MonoBehaviour
     public void Buy()//°ñµå·Î Á©¸® ±¸¸Å
     {
         if (_gold < jellyGoldList[_page]) return;
-        Instantiate(jellyPrefab, new Vector3(0, 0, 0), Quaternion.identity); //Á©¸® »ý¼º
+        GameObject obj = Instantiate(jellyPrefab, new Vector3(0, 0, 0), Quaternion.identity); //Á©¸® »ý¼º
+        JellyController jellyController = obj.GetComponent<JellyController>();
+        obj.name = "Jelly " + _page;
+        jellyController._id = _page;
+        jellyController.spriteRenderer.sprite = jellySpriteList[_page];
         _gold -= jellyGoldList[_page]; //º¸À¯ °ñµå - ÇÊ¿äÇÑ °ñµå
     }
 
     public void NumGoldUpgrade() //plant panel ¹öÆ°
     {
         if (_gold < numGoldList[numPage]) return;
-        if(numPage >= 5) NumGroup.gameObject.SetActive(false);
-        else _gold -= numGoldList[numPage++]; //º¸À¯ °ñµå - ÇÊ¿äÇÑ °ñµå
-        numGoldText.text = numGoldList[numPage].ToString();
+        _gold -= numGoldList[numPage++]; //º¸À¯ °ñµå - ÇÊ¿äÇÑ °ñµå
+        if (numPage >= 5) NumGroup.gameObject.SetActive(false);
+        else numGoldText.text = numGoldList[numPage].ToString();
         numSubText.text = "Á©¸® ¼ö¿ë·® " + numPage * 2;
     }
 
     public void ClickGodlUpgrade() //plant panel ¹öÆ°
     {
         if (_gold < clickGoldList[clickPage]) return;
-        if(clickPage >= 5) ClickGroup.gameObject.SetActive(false);
-        else _gold -= clickGoldList[clickPage]; //º¸À¯ °ñµå - ÇÊ¿äÇÑ °ñµå
-        clickGoldText.text = clickGoldList[clickPage++].ToString();
+        _gold -= clickGoldList[clickPage]; //º¸À¯ °ñµå - ÇÊ¿äÇÑ °ñµå
+        if (clickPage >= 5) ClickGroup.gameObject.SetActive(false);
+        else clickGoldText.text = clickGoldList[clickPage++].ToString();
         clickSubText.text = "Å¬¸¯ »ý»ê·® x " + clickPage;
 
     }
