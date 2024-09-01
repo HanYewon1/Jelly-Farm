@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class JellyController : MonoBehaviour
 {
-    public GameObject leftTop;
-    public GameObject rightBottom;
     public GameObject shadow;
     public float shadow_pos_y;
     public float speed = 5f;
@@ -20,7 +18,7 @@ public class JellyController : MonoBehaviour
     public GameManager gameManager;
     public int _id;
     public int _level;
-    public float _exp;
+    public float _exp; // 젤리별 경험치
     // Start is called before the first frame update
     private void Awake()
     {

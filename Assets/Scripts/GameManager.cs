@@ -37,9 +37,21 @@ public class GameManager : MonoBehaviour
     public int maxExp;
     bool[] unlockList;
 
+    //plant panel
+    public int[] numGoldList; //젤리수용량 버튼
+    public int numPage;
+    public int[] clickGoldList; //클릭생산량 버튼
+    public int clickPage;
+    public TMP_Text numGoldText;
+    public TMP_Text clickGoldText;
+    public TMP_Text numSubText;
+    public TMP_Text clickSubText;
+    public GameObject NumGroup;
+    public GameObject ClickGroup;
+
     public GameObject jellyPrefab;
 
-    private static int _page = 0; // UI 페이지
+    public int _page = 0; // UI 페이지
 
     JellyController jellyController;
 
@@ -56,8 +68,6 @@ public class GameManager : MonoBehaviour
             unlockList[i] = true; //페이지 0, 1, 2 해금된 상태로 시작
             LockGroup.gameObject.SetActive(!unlockList[i]);
         }
-       ;
-
     }
     public void ChangeAc(Animator anim, int level)
     {
@@ -135,6 +145,23 @@ public class GameManager : MonoBehaviour
         _gold -= jellyGoldList[_page]; //보유 골드 - 필요한 골드
     }
 
+    public void NumGoldUpgrade() //plant panel 버튼
+    {
+        if (_gold < numGoldList[numPage]) return;
+        if(numPage >= 5) NumGroup.gameObject.SetActive(false);
+        else _gold -= numGoldList[numPage++]; //보유 골드 - 필요한 골드
+        numGoldText.text = numGoldList[numPage].ToString();
+        numSubText.text = "젤리 수용량 " + numPage * 2;
+    }
 
+    public void ClickGodlUpgrade() //plant panel 버튼
+    {
+        if (_gold < clickGoldList[clickPage]) return;
+        if(clickPage >= 5) ClickGroup.gameObject.SetActive(false);
+        else _gold -= clickGoldList[clickPage]; //보유 골드 - 필요한 골드
+        clickGoldText.text = clickGoldList[clickPage++].ToString();
+        clickSubText.text = "클릭 생산량 x " + clickPage;
+
+    }
 
 }
