@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
         _page++;
         Debug.Log("page: " + _page);
         PanelChange();
+        SoundManager.Instance.Sound("Button");
     }
 
     public void OnLeftButtonClick()
@@ -94,6 +95,7 @@ public class GameManager : MonoBehaviour
         _page--;
         Debug.Log("page: " + _page);
         PanelChange();
+        SoundManager.Instance.Sound("Button");
     }
 
     void PanelChange()
@@ -134,7 +136,9 @@ public class GameManager : MonoBehaviour
         if (_jelatin < jellyJelatinList[_page]) return;
         unlockList[_page] = true;
         PanelChange();
+        SoundManager.Instance.Sound("Unlock");
         _jelatin -= jellyJelatinList[_page]; //보유 젤라틴 - 필요한 젤라틴
+
         
     }
 
@@ -147,6 +151,7 @@ public class GameManager : MonoBehaviour
         jellyController._id = _page;
         jellyController.spriteRenderer.sprite = jellySpriteList[_page];
         _gold -= jellyGoldList[_page]; //보유 골드 - 필요한 골드
+        SoundManager.Instance.Sound("Buy");
     }
 
     public void NumGoldUpgrade() //plant panel 버튼
@@ -156,6 +161,7 @@ public class GameManager : MonoBehaviour
         if (numPage >= 5) NumGroup.gameObject.SetActive(false);
         else numGoldText.text = numGoldList[numPage].ToString();
         numSubText.text = "젤리 수용량 " + numPage * 2;
+        SoundManager.Instance.Sound("Button");
     }
 
     public void ClickGodlUpgrade() //plant panel 버튼
@@ -165,6 +171,7 @@ public class GameManager : MonoBehaviour
         if (clickPage >= 5) ClickGroup.gameObject.SetActive(false);
         else clickGoldText.text = clickGoldList[clickPage++].ToString();
         clickSubText.text = "클릭 생산량 x " + clickPage;
+        SoundManager.Instance.Sound("Button");
 
     }
 

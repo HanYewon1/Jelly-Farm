@@ -111,7 +111,7 @@ public class JellyController : MonoBehaviour
                 if (_exp < gameManager.maxExp) ++_exp; //클릭하면 경험치 1씩 증가
                 gameManager.JelatinChange(_id, _level); //젤라틴 값 증가
                 StartCoroutine(Pause()); //젤리 이동 멈춤
-            SoundManager.Instance.Sound("Touch");
+                SoundManager.Instance.Sound("Touch"); //터치 시 효과음
             }
             
     }

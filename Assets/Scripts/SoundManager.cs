@@ -10,7 +10,8 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance;
     void Awake()
     {
-        SfxPlayer=GameObject.Find("SfxPlayer").GetComponent<AudioSource>();
+        Instance = this;
+        SfxPlayer=GameObject.Find("Sfx Player").GetComponent<AudioSource>();
     }
     public void Sound(string type)
     {
@@ -28,8 +29,8 @@ public class SoundManager : MonoBehaviour
             case "Touch": index=8; break;
             case "Unlock": index = 9; break;
         }
-        
-        
+        SfxPlayer.clip = audioClips[index];
+        SfxPlayer.Play();
         
     }
 }
