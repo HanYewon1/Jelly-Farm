@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     public int maxGold;
     public int maxJelatin;
     public int maxExp;
-    bool[] unlockList;
+    public bool[] unlockList;
 
     //plant panel
     public int[] numGoldList; //젤리수용량 버튼
@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
     public TMP_Text clickSubText;
     public GameObject NumGroup;
     public GameObject ClickGroup;
+    public GameObject data_manager_obj;
+    public DataManager data_manager;
 
     public GameObject jellyPrefab;
 
@@ -76,7 +78,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         jellyController = GetComponent<JellyController>();
-        invoke("LoadData", 0.1f);
+        Invoke("LoadData", 0.1f);
     }
 
     public void ChangeAc(Animator anim, int level)
@@ -187,7 +189,7 @@ public class GameManager : MonoBehaviour
 
     void LoadData()
     {
-        lock_group.gameObject.SetActive(!unlockList[_page]);
+        LockGroup.gameObject.SetActive(!unlockList[_page]);
 
         for(int i = 0; i < Jelly_Data_List.Count; ++i)
         {

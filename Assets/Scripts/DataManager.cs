@@ -18,7 +18,7 @@ public class DataManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _path = Path.Combine(Appliaction.dataPath, "database.json");
+        _path = Path.Combine(Application.dataPath, "database.json");
         JsonLoad();
     }
     public void JsonLoad()
@@ -39,11 +39,11 @@ public class DataManager : MonoBehaviour
             {
                 for(int i = 0; i < save_data.Jelly_List.Count; ++i)
                 {
-                    GameManager.Instance.Jelly_Data_List.Add(save_data.Jelly_List[i])
+                    GameManager.Instance.Jelly_Data_List.Add(save_data.Jelly_List[i]);
                 }
                 for(int i=0;i<save_data.Jelly_Unlock_List.Length; ++i)
                 {
-                    GameManager.Instance.Jelly_Unlock_List[i] = save_data.Jelly_Unlock_List[i];
+                    GameManager.Instance.unlockList[i] = save_data.Jelly_Unlock_List[i];
                 }
                 GameManager.Instance._jelatin = save_data._jelatin;
                 GameManager.Instance._gold =save_data._gold;
@@ -60,9 +60,9 @@ public class DataManager : MonoBehaviour
             JellyController jellyController = GameManager.Instance.Jelly_List[i];
             save_data.Jelly_List.Add(new Data(jellyController.gameObject.transform.position, jellyController._id, jellyController._level, jellyController._exp));
         }
-        for(int i = 0; i < GameManager.Instance.Jelly_Unlock_List.Length; ++i)
+        for(int i = 0; i < GameManager.Instance.unlockList.Length; ++i)
         {
-            save_data.Jelly_Unlock_List[i] = GameManager.Instance.Jelly_Unlock_List[i];
+            save_data.Jelly_Unlock_List[i] = GameManager.Instance.unlockList[i];
 
         }
         save_data._jelatin = GameManager.Instance._jelatin;

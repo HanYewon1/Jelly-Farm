@@ -63,20 +63,7 @@ public class JellyController : MonoBehaviour
             yield return new WaitForSeconds(2);
         }
     }
-   /* void Border()
-    {
-        float pos_x = transform.position.x;
-        float pos_y = transform.position.y;
-
-        if (pos_x < leftTop.transform.position.x || pos_x > rightBottom.transform.position.x)
-        {
-            nextPosition.x = -nextPosition.x;
-        }
-        else if (pos_y > leftTop.transform.position.y || pos_y < rightBottom.transform.position.y)
-        {
-            nextPosition.y = -nextPosition.y;
-        }
-    }*/
+  
     void RandomMove() //랜덤 방향으로 이동
     {
         float pos_x = transform.position.x;
@@ -148,5 +135,26 @@ public class JellyController : MonoBehaviour
         }
         shadow.transform.localPosition = new Vector3(0, shadow_pos_y, 0);
     }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Contains("Bottom") || collision.gameObject.name.Contains("Top"))
+        {
+            nextPosition.y = -nextPosition.y;
+        }
+        else if (collision.gameObject.name.Contains("Left") || collision.gameObject.name.Contains("Right"))
+        {
+            nextPosition.x = -nextPosition.x;
+            if (nextPosition.x < 0) //왼쪽
+            {
+                GetComponent<SpriteRenderer>().flipX = true;
+            }
+            else if (nextPosition.x > 0) //오른쪽
+            {
+                GetComponent<SpriteRenderer>().flipX = false;
+            }
+
+        }
+        }
 
 }

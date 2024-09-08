@@ -17,6 +17,7 @@ public class SoundManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        BgmPlayer = GameObject.Find("Bgm Player").GetComponent<AudioSource>();
         SfxPlayer=GameObject.Find("Sfx Player").GetComponent<AudioSource>();
         BgmSlider = BgmSlider.GetComponent<Slider>();
         SfxSlider = SfxSlider.GetComponent<Slider>();
