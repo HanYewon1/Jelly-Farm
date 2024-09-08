@@ -1,17 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
+    AudioSource BgmPlayer;
     AudioSource SfxPlayer;
     SoundManager soundManager;
     public AudioClip[] audioClips;
     public static SoundManager Instance;
+
+    public Slider BgmSlider;
+    public Slider SfxSlider;
+
     void Awake()
     {
         Instance = this;
         SfxPlayer=GameObject.Find("Sfx Player").GetComponent<AudioSource>();
+        BgmSlider = BgmSlider.GetComponent<Slider>();
+        SfxSlider = SfxSlider.GetComponent<Slider>();
+
+        BgmSlider.onValueChanged.AddListener(ChangeBgmSound);
+        SfxSlider.onValueChanged.AddListener(ChangeSfxSound);
     }
     public void Sound(string type)
     {
@@ -32,5 +43,15 @@ public class SoundManager : MonoBehaviour
         SfxPlayer.clip = audioClips[index];
         SfxPlayer.Play();
         
+    }
+
+    void ChangeBgmSound(float value)
+    {
+        BgmPlayer.volume = value;
+    }
+
+    void ChangeSfxSound(float value)
+    {
+        SfxPlayer.volume = value;
     }
 }
