@@ -10,6 +10,8 @@ public class SaveData
     public int _gold;
     public bool[] Jelly_Unlock_List = new bool[12];
     public List<Data> Jelly_List = new List<Data>();
+    public int numPage;
+    public int clickPage;
 }
 
 public class DataManager : MonoBehaviour
@@ -28,6 +30,9 @@ public class DataManager : MonoBehaviour
         {
             GameManager.Instance._jelatin = 0;
             GameManager.Instance._gold = 0;
+            GameManager.Instance.numPage = 1;
+            GameManager.Instance.clickPage = 1;
+            GameManager.Instance._isClear = false;
             JsonSave();
         }
         else
@@ -47,6 +52,8 @@ public class DataManager : MonoBehaviour
                 }
                 GameManager.Instance._jelatin = save_data._jelatin;
                 GameManager.Instance._gold =save_data._gold;
+                GameManager.Instance.numPage = save_data.numPage;
+                GameManager.Instance.clickPage = save_data.clickPage;
             }
         }
     }
@@ -67,10 +74,11 @@ public class DataManager : MonoBehaviour
         }
         save_data._jelatin = GameManager.Instance._jelatin;
         save_data._gold = GameManager.Instance._gold;
+        save_data.numPage = GameManager.Instance.numPage;
+        save_data.clickPage = GameManager.Instance.clickPage;
 
         string _json = JsonUtility.ToJson(save_data, true);
         File.WriteAllText(_path, _json);
     }
-    // Update is called once per frame
    
 }

@@ -56,6 +56,8 @@ public class GameManager : MonoBehaviour
     public GameObject data_manager_obj;
     public DataManager data_manager;
 
+    public bool _isClear;
+
     public GameObject jellyPrefab;
 
     public int _page = 0; // UI 페이지
@@ -156,13 +158,14 @@ public class GameManager : MonoBehaviour
 
     public void Buy()//골드로 젤리 구매
     {
-        if (_gold < jellyGoldList[_page]) return;
+        if (_gold < jellyGoldList[_page] || Jelly_List.Count>= numPage * 2) return;
         GameObject obj = Instantiate(jellyPrefab, new Vector3(0, 0, 0), Quaternion.identity); //젤리 생성
         JellyController jellyController = obj.GetComponent<JellyController>();
         obj.name = "Jelly " + _page;
         jellyController._id = _page;
         jellyController.spriteRenderer.sprite = jellySpriteList[_page];
         _gold -= jellyGoldList[_page]; //보유 골드 - 필요한 골드
+        Jelly_List.Add(jellyController);
         SoundManager.Instance.Sound("Buy");
     }
 
@@ -176,7 +179,7 @@ public class GameManager : MonoBehaviour
         SoundManager.Instance.Sound("Button");
     }
 
-    public void ClickGodlUpgrade() //plant panel 버튼
+    public void ClickGoldUpgrade() //plant panel 버튼
     {
         if (_gold < clickGoldList[clickPage]) return;
         _gold -= clickGoldList[clickPage]; //보유 골드 - 필요한 골드
@@ -185,6 +188,10 @@ public class GameManager : MonoBehaviour
         clickSubText.text = "클릭 생산량 x " + clickPage;
         SoundManager.Instance.Sound("Button");
 
+    }
+    public void Clear()
+    {
+        gameObject.SetActive(true);
     }
 
     void LoadData()
@@ -196,4 +203,5 @@ public class GameManager : MonoBehaviour
             GameObject obj = Instantiate(jellyPrefab, Jelly_Data_List[i]._pos, Quaternion.identity);
         }
     }
+
 }

@@ -18,5 +18,6 @@ public class Data //ตฅภฬลอ
         this._id = _id;
         this._level = _level;
         this._exp = _exp;
+
     }
 }
