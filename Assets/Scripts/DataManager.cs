@@ -28,8 +28,8 @@ public class DataManager : MonoBehaviour
         SaveData save_data = new SaveData();
         if (!File.Exists(_path))
         {
-            GameManager.Instance._jelatin = 0;
-            GameManager.Instance._gold = 0;
+            GameManager.Instance._jelatin = 100;
+            GameManager.Instance._gold = 200;
             GameManager.Instance.numPage = 1;
             GameManager.Instance.clickPage = 1;
             GameManager.Instance._isClear = false;

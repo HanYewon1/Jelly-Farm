@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     public GameObject ClickGroup;
     public GameObject data_manager_obj;
     public DataManager data_manager;
+    public NoticeManager noticeManager;
 
     public bool _isClear;
 
@@ -69,11 +70,6 @@ public class GameManager : MonoBehaviour
         Instance = this;
         isSell = false;
         unlockList = new bool[12];
-        for(int i = 0; i <= 2; i++)
-        {
-            unlockList[i] = true; //페이지 0, 1, 2 해금된 상태로 시작
-            LockGroup.gameObject.SetActive(!unlockList[i]);
-        }
         data_manager = data_manager_obj.GetComponent<DataManager>();
     }
 
@@ -145,20 +141,49 @@ public class GameManager : MonoBehaviour
 
     public void LockList() //해금
     {
-        
+
         //보유하고 있는 젤라틴이 필요한 젤라틴보다 적으면 무효
-        if (_jelatin < jellyJelatinList[_page]) return;
+        if (_jelatin < jellyJelatinList[_page])
+        {
+            noticeManager.NotJelatinNotice_Jelly();
+            return;
+        }
+
         unlockList[_page] = true;
         PanelChange();
         SoundManager.Instance.Sound("Unlock");
         _jelatin -= jellyJelatinList[_page]; //보유 젤라틴 - 필요한 젤라틴
 
+        if (GameClear()) //모두 해금 시 게임 클리어
+        {
+            noticeManager.UnlockNotice();
+        }
+
         
+    }
+
+    private bool GameClear() //모두 해금했는지 판단
+    {
+        foreach(bool isUnlocked in unlockList)
+        {
+            if (!isUnlocked) return false;
+        }
+        return true;
     }
 
     public void Buy()//골드로 젤리 구매
     {
-        if (_gold < jellyGoldList[_page] || Jelly_List.Count>= numPage * 2) return;
+        if (_gold < jellyGoldList[_page])
+        {
+            noticeManager.NotGoldNotice_Jelly();
+            return;
+        }
+        if (Jelly_List.Count >= numPage * 2)
+        {
+            noticeManager.NotNumNotice();
+            return;
+        }
+
         GameObject obj = Instantiate(jellyPrefab, new Vector3(0, 0, 0), Quaternion.identity); //젤리 생성
         JellyController jellyController = obj.GetComponent<JellyController>();
         obj.name = "Jelly " + _page;
@@ -171,7 +196,11 @@ public class GameManager : MonoBehaviour
 
     public void NumGoldUpgrade() //plant panel 버튼
     {
-        if (_gold < numGoldList[numPage]) return;
+        if (_gold < numGoldList[numPage])
+        {
+            noticeManager.NotGoldNotice_Jelly();
+            return;
+        }
         _gold -= numGoldList[numPage++]; //보유 골드 - 필요한 골드
         if (numPage >= 5) NumGroup.gameObject.SetActive(false);
         else numGoldText.text = numGoldList[numPage].ToString();
@@ -181,10 +210,14 @@ public class GameManager : MonoBehaviour
 
     public void ClickGoldUpgrade() //plant panel 버튼
     {
-        if (_gold < clickGoldList[clickPage]) return;
-        _gold -= clickGoldList[clickPage]; //보유 골드 - 필요한 골드
+        if (_gold < clickGoldList[clickPage])
+        {
+            noticeManager.NotGoldNotice_Jelly();
+            return;
+        }
+        _gold -= clickGoldList[clickPage++]; //보유 골드 - 필요한 골드
         if (clickPage >= 5) ClickGroup.gameObject.SetActive(false);
-        else clickGoldText.text = clickGoldList[clickPage++].ToString();
+        else clickGoldText.text = clickGoldList[clickPage].ToString();
         clickSubText.text = "클릭 생산량 x " + clickPage;
         SoundManager.Instance.Sound("Button");
 
