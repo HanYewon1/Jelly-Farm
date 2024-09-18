@@ -20,7 +20,7 @@ public class DataManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _path = Path.Combine(Application.dataPath, "database.json");
+        _path = Path.Combine(Application.persistentDataPath, "database.json");
         JsonLoad();
     }
     public void JsonLoad()

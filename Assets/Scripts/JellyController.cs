@@ -95,11 +95,16 @@ public class JellyController : MonoBehaviour
             RaycastHit2D rayhit = Physics2D.Raycast(mousePos, Vector2.zero);
             if (rayhit.collider != null) //ray가 콜라이더와 충돌 시
             {
-                if (_exp < gameManager.maxExp) ++_exp; //클릭하면 경험치 1씩 증가
+                if (_exp < gameManager.maxExp)
+                {
+                    ++_exp; //클릭하면 경험치 1씩 증가
+                    Debug.Log($"Jelly {_id} clicked, current EXP: {_exp}");
+                }
                 gameManager.JelatinChange(_id, _level); //젤라틴 값 증가
                 StartCoroutine(Pause()); //젤리 이동 멈춤
                 SoundManager.Instance.Sound("Touch"); //터치 시 효과음
-            }
+                
+        }
             
     }
 
@@ -114,7 +119,10 @@ public class JellyController : MonoBehaviour
 
     void Exp() //시간이 지나면 자동으로 쌓이는 경험치
     {
-        if (_exp < gameManager.maxExp) _exp += Time.deltaTime;
+        if (_exp < gameManager.maxExp)
+        {
+            _exp += Time.deltaTime;
+        }
         if (_exp > (50 * _level) && _level < 3) //레벨 바뀔 때마다 애니메이터 바뀜
         {
             gameManager.ChangeAc(_animator, ++_level);

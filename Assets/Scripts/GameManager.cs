@@ -188,10 +188,12 @@ public class GameManager : MonoBehaviour
         JellyController jellyController = obj.GetComponent<JellyController>();
         obj.name = "Jelly " + _page;
         jellyController._id = _page;
+        jellyController._exp = 0;
         jellyController.spriteRenderer.sprite = jellySpriteList[_page];
         _gold -= jellyGoldList[_page]; //보유 골드 - 필요한 골드
         Jelly_List.Add(jellyController);
         SoundManager.Instance.Sound("Buy");
+        DataManager.Instance.JsonSave();
     }
 
     public void NumGoldUpgrade() //plant panel 버튼
