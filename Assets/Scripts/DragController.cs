@@ -88,6 +88,7 @@ public class DragController : MonoBehaviour
         {
             gameManager.GoldChange(jellyController._id, jellyController._level);
             Destroy(gameObject);
+            
         }
         _dragActive = false;
     }

@@ -22,13 +22,26 @@ public class JellyController : MonoBehaviour
     public GameObject gameManagerObject;
     public SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
+
+    private void Start()
+    {
+        _exp = 0f;
+    }
     private void Awake()
     {
        
         rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        gameManagerObject = GameObject.Find("GameManager").gameObject;
-        spriteRenderer=GetComponent<SpriteRenderer>();
+        gameManagerObject = GameObject.Find("GameManager");
+        if (gameManagerObject != null)
+        {
+            gameManager = gameManagerObject.GetComponent<GameManager>();
+        }
+        else
+        {
+            Debug.LogError("GameManager not found!");
+        }
+        spriteRenderer =GetComponent<SpriteRenderer>();
 
         StartCoroutine(MovePause());
         clickPause = false;
@@ -98,12 +111,11 @@ public class JellyController : MonoBehaviour
                 if (_exp < gameManager.maxExp)
                 {
                     ++_exp; //클릭하면 경험치 1씩 증가
-                    Debug.Log($"Jelly {_id} clicked, current EXP: {_exp}");
                 }
                 gameManager.JelatinChange(_id, _level); //젤라틴 값 증가
                 StartCoroutine(Pause()); //젤리 이동 멈춤
                 SoundManager.Instance.Sound("Touch"); //터치 시 효과음
-                
+          
         }
             
     }
@@ -119,6 +131,11 @@ public class JellyController : MonoBehaviour
 
     void Exp() //시간이 지나면 자동으로 쌓이는 경험치
     {
+        if (gameManager == null)
+        {
+            Debug.LogError("gameManager is null in Exp()");
+            return;
+        }
         if (_exp < gameManager.maxExp)
         {
             _exp += Time.deltaTime;

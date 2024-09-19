@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -71,12 +72,12 @@ public class GameManager : MonoBehaviour
         isSell = false;
         unlockList = new bool[12];
         data_manager = data_manager_obj.GetComponent<DataManager>();
+        LoadData();
     }
 
     private void Start()
     {
         jellyController = GetComponent<JellyController>();
-        Invoke("LoadData", 0.1f);
     }
 
     public void ChangeAc(Animator anim, int level)
@@ -85,7 +86,13 @@ public class GameManager : MonoBehaviour
     }
     public void CheckSell()
     {
-        isSell = (isSell == false);
+        isSell = !isSell;
+        if (Jelly_List.Count > 0)
+        {
+            Jelly_List.RemoveAt(Jelly_List.Count - 1);
+            Console.WriteLine("Jelly_List에서 마지막 요소 삭제됨");
+        }
+
     }
 
     public void OnRightButtonClick()
@@ -184,16 +191,27 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+
         GameObject obj = Instantiate(jellyPrefab, new Vector3(0, 0, 0), Quaternion.identity); //젤리 생성
+        if (obj == null)
+        {
+            Debug.LogError("jellyPrefab instantiation failed!");
+            return;
+        }
         JellyController jellyController = obj.GetComponent<JellyController>();
+        if (jellyController == null)
+        {
+            Debug.LogError("JellyController is null!");
+            return;
+        }
         obj.name = "Jelly " + _page;
         jellyController._id = _page;
-        jellyController._exp = 0;
+        jellyController._exp = 0f;
         jellyController.spriteRenderer.sprite = jellySpriteList[_page];
         _gold -= jellyGoldList[_page]; //보유 골드 - 필요한 골드
         Jelly_List.Add(jellyController);
         SoundManager.Instance.Sound("Buy");
-        DataManager.Instance.JsonSave();
+        
     }
 
     public void NumGoldUpgrade() //plant panel 버튼

@@ -16,10 +16,12 @@ public class SaveData
 
 public class DataManager : MonoBehaviour
 {
+    public static DataManager Instance;
     string _path;
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
         _path = Path.Combine(Application.persistentDataPath, "database.json");
         JsonLoad();
     }
