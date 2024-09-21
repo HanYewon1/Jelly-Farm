@@ -78,6 +78,9 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         jellyController = GetComponent<JellyController>();
+        Gold_Text.text = _gold.ToString();
+        Jelatin_Text.text = _jelatin.ToString();
+
     }
 
     public void ChangeAc(Animator anim, int level)
@@ -160,6 +163,7 @@ public class GameManager : MonoBehaviour
         PanelChange();
         SoundManager.Instance.Sound("Unlock");
         _jelatin -= jellyJelatinList[_page]; //보유 젤라틴 - 필요한 젤라틴
+        Jelatin_Text.text = _jelatin.ToString();
 
         if (GameClear()) //모두 해금 시 게임 클리어
         {
@@ -209,6 +213,7 @@ public class GameManager : MonoBehaviour
         jellyController._exp = 0f;
         jellyController.spriteRenderer.sprite = jellySpriteList[_page];
         _gold -= jellyGoldList[_page]; //보유 골드 - 필요한 골드
+        Gold_Text.text = _gold.ToString();
         Jelly_List.Add(jellyController);
         SoundManager.Instance.Sound("Buy");
         
