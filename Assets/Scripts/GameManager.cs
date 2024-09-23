@@ -221,30 +221,32 @@ public class GameManager : MonoBehaviour
 
     public void NumGoldUpgrade() //plant panel 버튼
     {
-        if (_gold < numGoldList[numPage])
+        if (_gold < numGoldList[numPage - 1])
         {
             noticeManager.NotGoldNotice_Jelly();
             return;
         }
-        _gold -= numGoldList[numPage++]; //보유 골드 - 필요한 골드
+        _gold -= numGoldList[numPage - 1];//보유 골드 - 필요한 골드
         if (numPage >= 5) NumGroup.gameObject.SetActive(false);
         else numGoldText.text = numGoldList[numPage].ToString();
         numSubText.text = "젤리 수용량 " + numPage * 2;
         SoundManager.Instance.Sound("Button");
+        numPage++;
     }
 
     public void ClickGoldUpgrade() //plant panel 버튼
     {
-        if (_gold < clickGoldList[clickPage])
+        if (_gold < clickGoldList[clickPage - 1])
         {
             noticeManager.NotGoldNotice_Jelly();
             return;
         }
-        _gold -= clickGoldList[clickPage++]; //보유 골드 - 필요한 골드
+        _gold -= clickGoldList[clickPage - 1]; //보유 골드 - 필요한 골드
         if (clickPage >= 5) ClickGroup.gameObject.SetActive(false);
         else clickGoldText.text = clickGoldList[clickPage].ToString();
         clickSubText.text = "클릭 생산량 x " + clickPage;
         SoundManager.Instance.Sound("Button");
+        clickPage++;
 
     }
     public void Clear()
