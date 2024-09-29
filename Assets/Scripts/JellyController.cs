@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class JellyController : MonoBehaviour
@@ -101,24 +102,30 @@ public class JellyController : MonoBehaviour
         }
         
     }
-
-    void OnMouseDown()//마우스 클릭 시
+    void TouchInput()//마우스 클릭 시
     {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D rayhit = Physics2D.Raycast(mousePos, Vector2.zero);
-            if (rayhit.collider != null) //ray가 콜라이더와 충돌 시
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began) 
             {
-                if (_exp < gameManager.maxExp)
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                RaycastHit2D rayhit = Physics2D.Raycast(mousePos, Vector2.zero);
+                if (rayhit.collider != null && rayhit.collider.gameObject == gameObject)
                 {
-                    ++_exp; //클릭하면 경험치 1씩 증가
+                    if (_exp < gameManager.maxExp)
+                    {
+                        ++_exp; //클릭하면 경험치 1씩 증가
+                    }
+                    gameManager.JelatinChange(_id, _level); //젤라틴 값 증가
+                    StartCoroutine(Pause()); //젤리 이동 멈춤
+                    SoundManager.Instance.Sound("Touch"); //터치 시 효과음
                 }
-                gameManager.JelatinChange(_id, _level); //젤라틴 값 증가
-                StartCoroutine(Pause()); //젤리 이동 멈춤
-                SoundManager.Instance.Sound("Touch"); //터치 시 효과음
-          
+            }
         }
-            
-    }
+
+}
 
     IEnumerator Pause() //즉시 이동 멈추고 Touch 애니메이션
     {
