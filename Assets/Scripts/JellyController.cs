@@ -106,21 +106,24 @@ public class JellyController : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == TouchPhase.Began) 
+            for (int i = 0; i < Input.touchCount; i++)
             {
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                RaycastHit2D rayhit = Physics2D.Raycast(mousePos, Vector2.zero);
-                if (rayhit.collider != null && rayhit.collider.gameObject == gameObject)
+                Touch touch = Input.GetTouch(i);
+
+                if (touch.phase == TouchPhase.Began)
                 {
-                    if (_exp < gameManager.maxExp)
+                    Vector2 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
+                    RaycastHit2D rayhit = Physics2D.Raycast(touchPos, Vector2.zero);
+                    if (rayhit.collider != null && rayhit.collider.gameObject == gameObject)
                     {
-                        ++_exp; //클릭하면 경험치 1씩 증가
+                        if (_exp < gameManager.maxExp)
+                        {
+                            ++_exp; //클릭하면 경험치 1씩 증가
+                        }
+                        gameManager.JelatinChange(_id, _level); //젤라틴 값 증가
+                        StartCoroutine(Pause()); //젤리 이동 멈춤
+                        SoundManager.Instance.Sound("Touch"); //터치 시 효과음
                     }
-                    gameManager.JelatinChange(_id, _level); //젤라틴 값 증가
-                    StartCoroutine(Pause()); //젤리 이동 멈춤
-                    SoundManager.Instance.Sound("Touch"); //터치 시 효과음
                 }
             }
         }
