@@ -47,15 +47,13 @@ public class NoticeManager : MonoBehaviour
     }
     public void NotGoldNotice_Jelly()
     {
-        if (gameManager._gold < gameManager.jellyGoldList[gameManager._page])
-        {
             Notice_List_Text.text = NoticeList[4].ToString(); //골드 부족 시 알림 띄우기
             SetNotice();
-        }
+        
     }
     public void NotGoldNotice_Num()
     {
-        if (gameManager._gold < gameManager.numGoldList[gameManager.numPage])
+        if (gameManager._gold < gameManager.numGoldList[gameManager.numPage -1])
         { Notice_List_Text.text = NoticeList[4].ToString(); //골드 부족 시 알림 띄우기
             SetNotice();
         }
@@ -69,7 +67,7 @@ public class NoticeManager : MonoBehaviour
     }
     public void NotNumNotice()
     {
-        if (gameManager.Jelly_List.Count >= gameManager.numPage * 2)
+        if (gameManager.numberofJelly >= gameManager.numPage * 2)
         { Notice_List_Text.text = NoticeList[5].ToString(); //수용량 부족 시 알림 띄우기
             SetNotice();
         }

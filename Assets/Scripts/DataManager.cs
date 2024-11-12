@@ -18,11 +18,15 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;
     string _path;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         Instance = this;
         _path = Path.Combine(Application.persistentDataPath, "database.json");
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
         JsonLoad();
     }
     public void JsonLoad()
@@ -64,9 +68,9 @@ public class DataManager : MonoBehaviour
     {
         SaveData save_data = new SaveData();
 
-        for(int i=0;i<GameManager.Instance.Jelly_List.Count;++i)
+        for(int i=0;i<GameManager.Instance.numberofJelly;++i)
         {
-            JellyController jellyController = GameManager.Instance.Jelly_List[i];
+            JellyController jellyController = new JellyController();
             save_data.Jelly_List.Add(new Data(jellyController.gameObject.transform.position, jellyController._id, jellyController._level, jellyController._exp));
         }
         for(int i = 0; i < GameManager.Instance.unlockList.Length; ++i)
@@ -82,5 +86,8 @@ public class DataManager : MonoBehaviour
         string _json = JsonUtility.ToJson(save_data, true);
         File.WriteAllText(_path, _json);
     }
-   
+    void OnApplicationQuit()
+    {
+        JsonSave(); // 종료 시 데이터 저장
+    }
 }

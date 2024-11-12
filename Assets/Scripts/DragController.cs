@@ -29,7 +29,7 @@ public class DragController : MonoBehaviour
         {
             _clickTime = Time.time; //마우스 눌린 이후 시간
         }
-        if (_dragActive && Input.GetMouseButtonUp(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended))
+        if (_dragActive == true && Input.GetMouseButtonUp(0))
         {
             Drop();
             return;
@@ -38,7 +38,7 @@ public class DragController : MonoBehaviour
         { //0.2초 이상 클릭하고 있을 경우
             GetInputPosition();
             _worldPosition = Camera.main.ScreenToWorldPoint(_screenposition);
-            if (_dragActive) Drag();
+            if (_dragActive==true) Drag();
             else TryInitDrag();
         }
     }
@@ -70,6 +70,7 @@ public class DragController : MonoBehaviour
 
     }
 
+    //젤리 드래그
     void InitDrag()
     {
         _dragActive = true;
@@ -77,18 +78,23 @@ public class DragController : MonoBehaviour
 
     }
 
+    //젤리 드래그 후 움직임
     void Drag()
     {//드래그 도중 객체 위치 설정
         transform.position = _worldPosition + _offset;
     }
 
+    //젤리 드롭
     void Drop()
     {
-        if (gameManager.isSell)
+
+        if (gameManager.isSell==true)
         {
+            gameManager.JellyDecrease();
             gameManager.GoldChange(jellyController._id, jellyController._level);
             Destroy(gameObject);
-            
+
+
         }
         _dragActive = false;
     }

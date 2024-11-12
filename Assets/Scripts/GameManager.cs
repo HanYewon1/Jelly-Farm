@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public List<JellyController> Jelly_List = new List<JellyController>();
     public List<Data> Jelly_Data_List = new List<Data>();
 
     public RuntimeAnimatorController[] level_ac;
@@ -57,6 +56,7 @@ public class GameManager : MonoBehaviour
     public GameObject data_manager_obj;
     public DataManager data_manager;
     public NoticeManager noticeManager;
+    public int numberofJelly; //현재 젤리 개수
 
     public bool _isClear;
 
@@ -80,55 +80,64 @@ public class GameManager : MonoBehaviour
         jellyController = GetComponent<JellyController>();
         Gold_Text.text = _gold.ToString();
         Jelatin_Text.text = _jelatin.ToString();
-
     }
 
+    // AnimatorController 교체
     public void ChangeAc(Animator anim, int level)
     {
         anim.runtimeAnimatorController = level_ac[level - 1];
     }
+
+    // 판매 여부 체크
     public void CheckSell()
     {
-        isSell = !isSell;
-        if (Jelly_List.Count > 0)
-        {
-            Jelly_List.RemoveAt(Jelly_List.Count - 1);
-            Console.WriteLine("Jelly_List에서 마지막 요소 삭제됨");
-        }
-
+        isSell = true;
     }
 
+    //판매 후 젤리 감소
+    public void JellyDecrease()
+    {
+        numberofJelly--; //현재 젤리 수 감소
+        if (numberofJelly == 0)
+        {
+            Debug.Log("마지막 젤리 삭제됨");
+        }
+        
+        isSell = false;
+    }
+
+    // 오른쪽 버튼 클릭
     public void OnRightButtonClick()
     {
         if (_page >= 11) return; //최대 11페이지
         Debug.Log("Right button clicked");
         _page++;
-        Debug.Log("page: " + _page);
         PanelChange();
         SoundManager.Instance.Sound("Button");
     }
 
+    // 왼쪽 버튼 클릭
     public void OnLeftButtonClick()
     {
-        if(_page <=0) return; //최소 0페이지
+        if (_page <= 0) return; //최소 0페이지
         Debug.Log("Left button clicked");
         _page--;
-        Debug.Log("page: " + _page);
         PanelChange();
         SoundManager.Instance.Sound("Button");
     }
 
+    // 패널 변경
     void PanelChange()
     {
-        LockGroup.gameObject.SetActive(!unlockList[_page]);
+        LockGroup.SetActive(!unlockList[_page]);
         PageNumber.text = string.Format("#{0:00}", (_page + 1));
 
-        if (LockGroup.gameObject.activeSelf) //잠금된 화면
+        if (LockGroup.activeSelf) // 잠금된 화면
         {
             lockedJelly.sprite = jellySpriteList[_page];
             Jelly_Jelatin_List.text = jellyJelatinList[_page].ToString();
         }
-        else //해금된 화면
+        else // 해금된 화면
         {
             Jelly_Gold_List.text = jellyGoldList[_page].ToString();
             Jelly_Sprite_List.sprite = jellySpriteList[_page];
@@ -136,23 +145,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void JelatinChange(int id, int level) //젤라틴 값 변화
+    // 젤라틴 값 변화
+    public void JelatinChange(int id, int level)
     {
         _jelatin += (id + 1) * level * clickPage;
         if (_jelatin > maxJelatin) _jelatin = maxJelatin;
         Jelatin_Text.text = _jelatin.ToString();
     }
-    public void GoldChange(int id, int level) //골드 값 변화
+
+    // 골드 값 변화
+    public void GoldChange(int id, int level)
     {
         _gold += jellyGoldList[id] * level;
         if (_gold > maxGold) _gold = maxGold;
         Gold_Text.text = _gold.ToString();
     }
 
-    public void LockList() //해금
+    // 잠금 해제 처리
+    public void LockList()
     {
-
-        //보유하고 있는 젤라틴이 필요한 젤라틴보다 적으면 무효
         if (_jelatin < jellyJelatinList[_page])
         {
             noticeManager.NotJelatinNotice_Jelly();
@@ -162,93 +173,103 @@ public class GameManager : MonoBehaviour
         unlockList[_page] = true;
         PanelChange();
         SoundManager.Instance.Sound("Unlock");
-        _jelatin -= jellyJelatinList[_page]; //보유 젤라틴 - 필요한 젤라틴
+        _jelatin -= jellyJelatinList[_page];
         Jelatin_Text.text = _jelatin.ToString();
 
         if (GameClear()) //모두 해금 시 게임 클리어
         {
             noticeManager.UnlockNotice();
         }
-
-        
     }
 
-    private bool GameClear() //모두 해금했는지 판단
+    // 게임 클리어 여부 체크
+    private bool GameClear()
     {
-        foreach(bool isUnlocked in unlockList)
+        foreach (bool isUnlocked in unlockList)
         {
             if (!isUnlocked) return false;
         }
         return true;
     }
 
-    public void Buy()//골드로 젤리 구매
+    // 젤리 구매
+    public void Buy()
     {
         if (_gold < jellyGoldList[_page])
         {
             noticeManager.NotGoldNotice_Jelly();
             return;
         }
-        if (Jelly_List.Count >= numPage * 2)
+        if (numberofJelly >= numPage * 2)
         {
             noticeManager.NotNumNotice();
             return;
         }
 
-
-        GameObject obj = Instantiate(jellyPrefab, new Vector3(0, 0, 0), Quaternion.identity); //젤리 생성
+        GameObject obj = Instantiate(jellyPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         if (obj == null)
         {
             Debug.LogError("jellyPrefab instantiation failed!");
             return;
         }
+
         JellyController jellyController = obj.GetComponent<JellyController>();
         if (jellyController == null)
         {
             Debug.LogError("JellyController is null!");
             return;
         }
+
         obj.name = "Jelly " + _page;
         jellyController._id = _page;
         jellyController._exp = 0f;
         jellyController.spriteRenderer.sprite = jellySpriteList[_page];
-        _gold -= jellyGoldList[_page]; //보유 골드 - 필요한 골드
+        _gold -= jellyGoldList[_page];
         Gold_Text.text = _gold.ToString();
-        Jelly_List.Add(jellyController);
+        numberofJelly++;
         SoundManager.Instance.Sound("Buy");
-        
     }
 
-    public void NumGoldUpgrade() //plant panel 버튼
+    // 수용량 업그레이드
+    public void NumGoldUpgrade()
     {
-        if (_gold < numGoldList[numPage - 1])
+        Console.WriteLine("click");
+        if (_gold < numGoldList[numPage - 1])//gold 가 필요 gold보다 작을 경우
         {
-            noticeManager.NotGoldNotice_Jelly();
+            noticeManager.NotGoldNotice_Jelly();//알림창
             return;
         }
-        _gold -= numGoldList[numPage - 1];//보유 골드 - 필요한 골드
-        if (numPage >= 5) NumGroup.gameObject.SetActive(false);
-        else numGoldText.text = numGoldList[numPage].ToString();
-        numSubText.text = "젤리 수용량 " + numPage * 2;
-        SoundManager.Instance.Sound("Button");
-        numPage++;
+        else
+        {
+            _gold -= numGoldList[numPage - 1];//gold - 필요 gold
+            if (numPage >= 5) NumGroup.SetActive(false);//최대 레벨에 달성했을 경우 클릭 비활성화
+            else numGoldText.text = numGoldList[numPage].ToString();// 버튼 텍스트 업데이트
+            numSubText.text = "젤리 수용량 " + (numPage + 1) * 2; //텍스트 업데이트
+            SoundManager.Instance.Sound("Button");//버튼 소리
+            numPage++;//페이지 증가
+        }
     }
 
-    public void ClickGoldUpgrade() //plant panel 버튼
+    // 클릭 생산량 업그레이드
+    public void ClickGoldUpgrade()
     {
-        if (_gold < clickGoldList[clickPage - 1])
+        Console.WriteLine("click");
+        if (_gold < clickGoldList[clickPage - 1]) //gold 가 필요 gold보다 작을 경우
         {
-            noticeManager.NotGoldNotice_Jelly();
+            noticeManager.NotGoldNotice_Jelly(); //알림창
             return;
         }
-        _gold -= clickGoldList[clickPage - 1]; //보유 골드 - 필요한 골드
-        if (clickPage >= 5) ClickGroup.gameObject.SetActive(false);
-        else clickGoldText.text = clickGoldList[clickPage].ToString();
-        clickSubText.text = "클릭 생산량 x " + clickPage;
-        SoundManager.Instance.Sound("Button");
-        clickPage++;
-
+        else
+        {
+            _gold -= clickGoldList[clickPage - 1]; //gold - 필요 gold
+            if (clickPage >= 5) ClickGroup.SetActive(false); //최대 레벨에 달성했을 경우 클릭 비활성화
+            else clickGoldText.text = clickGoldList[clickPage].ToString(); // 버튼 텍스트 업데이트
+            clickSubText.text = "클릭 생산량 x " + clickPage;//텍스트 업데이트
+            SoundManager.Instance.Sound("Button"); //버튼 소리
+            clickPage++; //페이지 증가
+        }
     }
+
     public void Clear()
     {
         gameObject.SetActive(true);
@@ -256,12 +277,11 @@ public class GameManager : MonoBehaviour
 
     void LoadData()
     {
-        LockGroup.gameObject.SetActive(!unlockList[_page]);
+        LockGroup.SetActive(!unlockList[_page]);
 
-        for(int i = 0; i < Jelly_Data_List.Count; ++i)
+        for (int i = 0; i < Jelly_Data_List.Count; ++i)
         {
-            GameObject obj = Instantiate(jellyPrefab, Jelly_Data_List[i]._pos, Quaternion.identity);
+            Instantiate(jellyPrefab, Jelly_Data_List[i]._pos, Quaternion.identity);
         }
     }
-
 }

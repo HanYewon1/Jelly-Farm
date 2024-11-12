@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class JellyController : MonoBehaviour
@@ -30,7 +29,7 @@ public class JellyController : MonoBehaviour
     }
     private void Awake()
     {
-       
+
         rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         gameManagerObject = GameObject.Find("GameManager");
@@ -42,7 +41,7 @@ public class JellyController : MonoBehaviour
         {
             Debug.LogError("GameManager not found!");
         }
-        spriteRenderer =GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         StartCoroutine(MovePause());
         clickPause = false;
@@ -63,7 +62,7 @@ public class JellyController : MonoBehaviour
             rb.velocity = nextPosition * speed * Time.deltaTime;
         else rb.velocity = Vector2.zero;
 
-       
+
     }
 
     IEnumerator MovePause()
@@ -77,21 +76,21 @@ public class JellyController : MonoBehaviour
             yield return new WaitForSeconds(2);
         }
     }
-  
+
     void RandomMove() //랜덤 방향으로 이동
     {
         float pos_x = transform.position.x;
         float pos_y = transform.position.y;
         //방향 벡터 생성
         nextPosition = new Vector2(Random.Range(-5, 5), Random.Range(-5, 5));
-        
+
         //왼쪽으로 이동 시 flipX 처리
         if (nextPosition.x < 0) //왼쪽
         {
             GetComponent<SpriteRenderer>().flipX = true;
             _animator.SetBool("isWalk", true);
         }
-        else if(nextPosition.x > 0) //오른쪽
+        else if (nextPosition.x > 0) //오른쪽
         {
             GetComponent<SpriteRenderer>().flipX = false;
             _animator.SetBool("isWalk", true);
@@ -100,35 +99,26 @@ public class JellyController : MonoBehaviour
         {
             _animator.SetBool("isWalk", false);
         }
-        
-    }
-    void TouchInput()//마우스 클릭 시
-    {
-        if (Input.touchCount > 0)
-        {
-            for (int i = 0; i < Input.touchCount; i++)
-            {
-                Touch touch = Input.GetTouch(i);
 
-                if (touch.phase == TouchPhase.Began)
-                {
-                    Vector2 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
-                    RaycastHit2D rayhit = Physics2D.Raycast(touchPos, Vector2.zero);
-                    if (rayhit.collider != null && rayhit.collider.gameObject == gameObject)
-                    {
-                        if (_exp < gameManager.maxExp)
-                        {
-                            ++_exp; //클릭하면 경험치 1씩 증가
-                        }
-                        gameManager.JelatinChange(_id, _level); //젤라틴 값 증가
-                        StartCoroutine(Pause()); //젤리 이동 멈춤
-                        SoundManager.Instance.Sound("Touch"); //터치 시 효과음
-                    }
-                }
+    }
+
+    void OnMouseDown()//마우스 클릭 시
+    {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D rayhit = Physics2D.Raycast(mousePos, Vector2.zero);
+        if (rayhit.collider != null) //ray가 콜라이더와 충돌 시
+        {
+            if (_exp < gameManager.maxExp)
+            {
+                ++_exp; //클릭하면 경험치 1씩 증가
             }
+            gameManager.JelatinChange(_id, _level); //젤라틴 값 증가
+            StartCoroutine(Pause()); //젤리 이동 멈춤
+            SoundManager.Instance.Sound("Touch"); //터치 시 효과음
+
         }
 
-}
+    }
 
     IEnumerator Pause() //즉시 이동 멈추고 Touch 애니메이션
     {
@@ -190,6 +180,6 @@ public class JellyController : MonoBehaviour
             }
 
         }
-        }
+    }
 
 }
