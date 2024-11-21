@@ -11,9 +11,6 @@ public class JellyController : MonoBehaviour
     public float speed = 5f;
     public float minX, maxX, minY, maxY;
     public bool clickPause;
-    private Vector2 nextPosition;
-    private Animator _animator;
-    Rigidbody2D rb;
     public Vector3[] PointList;
     public GameManager gameManager;
     public int _id;
@@ -21,6 +18,11 @@ public class JellyController : MonoBehaviour
     public float _exp; // 젤리별 경험치
     public GameObject gameManagerObject;
     public SpriteRenderer spriteRenderer;
+
+    Rigidbody2D rb;
+
+    private Vector2 nextPosition;
+    private Animator _animator;
     // Start is called before the first frame update
 
     private void Start()
@@ -160,26 +162,7 @@ public class JellyController : MonoBehaviour
         }
         shadow.transform.localPosition = new Vector3(0, shadow_pos_y, 0);
     }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.name.Contains("Bottom") || collision.gameObject.name.Contains("Top"))
-        {
-            nextPosition.y = -nextPosition.y;
-        }
-        else if (collision.gameObject.name.Contains("Left") || collision.gameObject.name.Contains("Right"))
-        {
-            nextPosition.x = -nextPosition.x;
-            if (nextPosition.x < 0) //왼쪽
-            {
-                GetComponent<SpriteRenderer>().flipX = true;
-            }
-            else if (nextPosition.x > 0) //오른쪽
-            {
-                GetComponent<SpriteRenderer>().flipX = false;
-            }
-
-        }
-    }
+   
+    
 
 }

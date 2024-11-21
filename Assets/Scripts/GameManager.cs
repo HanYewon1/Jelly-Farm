@@ -242,6 +242,7 @@ public class GameManager : MonoBehaviour
         else
         {
             _gold -= numGoldList[numPage - 1];//gold - 필요 gold
+            Gold_Text.text = _gold.ToString(); //골드 업데이트
             if (numPage >= 5) NumGroup.SetActive(false);//최대 레벨에 달성했을 경우 클릭 비활성화
             else numGoldText.text = numGoldList[numPage].ToString();// 버튼 텍스트 업데이트
             numSubText.text = "젤리 수용량 " + (numPage + 1) * 2; //텍스트 업데이트
@@ -262,6 +263,7 @@ public class GameManager : MonoBehaviour
         else
         {
             _gold -= clickGoldList[clickPage - 1]; //gold - 필요 gold
+            Gold_Text.text = _gold.ToString(); //골드 업데이트
             if (clickPage >= 5) ClickGroup.SetActive(false); //최대 레벨에 달성했을 경우 클릭 비활성화
             else clickGoldText.text = clickGoldList[clickPage].ToString(); // 버튼 텍스트 업데이트
             clickSubText.text = "클릭 생산량 x " + clickPage;//텍스트 업데이트
