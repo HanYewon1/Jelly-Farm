@@ -10,9 +10,9 @@ public class Data //ตฅภฬลอ
     public int _id;
     public int _level;
     public float _exp;
-    public Vector3 _pos;
+    public Vector2 _pos;
 
-    public Data(Vector3 _pos, int _id, int _level, float _exp)
+    public Data(Vector2 _pos, int _id, int _level, float _exp)
     {
         this._pos = _pos;
         this._id = _id;

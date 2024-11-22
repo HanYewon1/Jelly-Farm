@@ -10,7 +10,7 @@ using UnityEngine.UI; //Text, Image 사용 위함
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
+    public List<JellyController> Jelly_List = new List<JellyController>();
     public List<Data> Jelly_Data_List = new List<Data>();
 
     public RuntimeAnimatorController[] level_ac;
@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         isSell = false;
         unlockList = new bool[12];
+        numberofJelly = Jelly_List.Count;//현재 젤리 개수
         data_manager = data_manager_obj.GetComponent<DataManager>();
         LoadData();
     }

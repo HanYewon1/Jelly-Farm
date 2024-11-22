@@ -7,17 +7,23 @@ using UnityEngine.UI;
 public class JellyController : MonoBehaviour
 {
     public GameObject shadow;
+    public GameManager gameManager;
+    public GameObject gameManagerObject;
+    public SpriteRenderer spriteRenderer;
+
     public float shadow_pos_y;
     public float speed = 5f;
     public float minX, maxX, minY, maxY;
-    public bool clickPause;
+    public float _exp; // 젤리별 경험치
+
     public Vector3[] PointList;
-    public GameManager gameManager;
+
     public int _id;
     public int _level;
-    public float _exp; // 젤리별 경험치
-    public GameObject gameManagerObject;
-    public SpriteRenderer spriteRenderer;
+
+    public bool clickPause;
+    
+    
 
     Rigidbody2D rb;
 
@@ -81,12 +87,11 @@ public class JellyController : MonoBehaviour
 
     void RandomMove() //랜덤 방향으로 이동
     {
-        float pos_x = transform.position.x;
-        float pos_y = transform.position.y;
-        //방향 벡터 생성
+        //방향 벡터 설정
         nextPosition = new Vector2(Random.Range(-5, 5), Random.Range(-5, 5));
 
         //왼쪽으로 이동 시 flipX 처리
+
         if (nextPosition.x < 0) //왼쪽
         {
             GetComponent<SpriteRenderer>().flipX = true;
@@ -101,6 +106,7 @@ public class JellyController : MonoBehaviour
         {
             _animator.SetBool("isWalk", false);
         }
+
 
     }
 
@@ -162,7 +168,23 @@ public class JellyController : MonoBehaviour
         }
         shadow.transform.localPosition = new Vector3(0, shadow_pos_y, 0);
     }
-   
-    
+
+    void OnTriggerEnter2D(Collider2D collision) //범위 내에서만 움직일 수 있도록 설정
+    {
+        if (collision.gameObject.CompareTag("Border"))
+        {
+            nextPosition = -nextPosition;
+            
+            if(nextPosition.x < 0) 
+            {
+                GetComponent<SpriteRenderer>().flipX = true;
+            }
+            else if (nextPosition.x > 0)
+            {
+                GetComponent<SpriteRenderer>().flipX = false;
+            }
+
+        }
+    }
 
 }

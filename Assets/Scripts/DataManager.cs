@@ -6,12 +6,15 @@ using System.IO;
 [System.Serializable]
 public class SaveData
 {
+    public List<Data> Jelly_List = new List<Data>();
+
     public int _jelatin;
     public int _gold;
-    public bool[] Jelly_Unlock_List = new bool[12];
-    public List<Data> Jelly_List = new List<Data>();
     public int numPage;
     public int clickPage;
+
+    public bool[] Jelly_Unlock_List = new bool[12];
+    
 }
 
 public class DataManager : MonoBehaviour
@@ -32,7 +35,8 @@ public class DataManager : MonoBehaviour
     public void JsonLoad()
     {
         SaveData save_data = new SaveData();
-        if (!File.Exists(_path))
+
+        if (!File.Exists(_path))//처음 데이터 설정
         {
             GameManager.Instance._jelatin = 100;
             GameManager.Instance._gold = 200;
@@ -48,14 +52,16 @@ public class DataManager : MonoBehaviour
 
             if(save_data!=null)
             {
-                for(int i = 0; i < save_data.Jelly_List.Count; ++i)
-                {
-                    GameManager.Instance.Jelly_Data_List.Add(save_data.Jelly_List[i]);
-                }
+                //Jelly_List 불러오기
+                GameManager.Instance.Jelly_Data_List = new List<Data>(save_data.Jelly_List);
+                
+                //Jelly_Unlock_List 불러오기
                 for(int i=0;i<save_data.Jelly_Unlock_List.Length; ++i)
                 {
                     GameManager.Instance.unlockList[i] = save_data.Jelly_Unlock_List[i];
                 }
+
+                //게임 정보 불러오기
                 GameManager.Instance._jelatin = save_data._jelatin;
                 GameManager.Instance._gold =save_data._gold;
                 GameManager.Instance.numPage = save_data.numPage;
@@ -68,21 +74,26 @@ public class DataManager : MonoBehaviour
     {
         SaveData save_data = new SaveData();
 
-        for(int i=0;i<GameManager.Instance.numberofJelly;++i)
+        //Jelly_List 저장
+        foreach(var jelly in GameManager.Instance.Jelly_Data_List)
         {
-            JellyController jellyController = new JellyController();
-            save_data.Jelly_List.Add(new Data(jellyController.gameObject.transform.position, jellyController._id, jellyController._level, jellyController._exp));
+            save_data.Jelly_List.Add(jelly);
         }
+
+        //Jelly_Unlock_List 저장
         for(int i = 0; i < GameManager.Instance.unlockList.Length; ++i)
         {
             save_data.Jelly_Unlock_List[i] = GameManager.Instance.unlockList[i];
 
         }
+
+        //게임 정보 저장
         save_data._jelatin = GameManager.Instance._jelatin;
         save_data._gold = GameManager.Instance._gold;
         save_data.numPage = GameManager.Instance.numPage;
         save_data.clickPage = GameManager.Instance.clickPage;
 
+        //JSON 파일 저장
         string _json = JsonUtility.ToJson(save_data, true);
         File.WriteAllText(_path, _json);
     }
